@@ -35,6 +35,7 @@ class SudokuGenerator:
 	Return: list[list]
     '''
     def get_board(self):
+
         return self.board
 
     '''
@@ -63,7 +64,7 @@ class SudokuGenerator:
             return False
         else:
             return True
-
+        
     '''
 	Determines if num is contained in the specified column (vertical) of the board
     If num is already in the specified col, return False. Otherwise, return True
@@ -98,7 +99,7 @@ class SudokuGenerator:
                 if self.board[row][col] == num:
                     return False
         return True
-    
+
     '''
     Determines if it is valid to enter num at (row, col) in the board
     This is done by checking that num is unused in the appropriate, row, column, and box
@@ -129,7 +130,7 @@ class SudokuGenerator:
             for j in range(self.box_length):
                 # if self.is_valid(nums[0], row_start + i, col_start + j):
                 self.board[row_start + i][col_start + j] = nums.pop()
-    
+
     '''
     Fills the three boxes along the main diagonal of the board
     These are the boxes which start at (0,0), (3,3), and (6,6)
