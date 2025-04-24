@@ -3,6 +3,9 @@ from sudoku_generator import *
 
 
 class Board:
+
+    original_board = None
+
     def __init__(self, width, height, screen, difficulty):
         # Constructor for the Board class.
         # screen is a window from PyGame.
@@ -24,12 +27,12 @@ class Board:
         for i in range(9):
             for j in range(9):
                 if self.board[i][j] != 0:
-                    self.boolean_board[j][i] = True
+                    self.boolean_board[i][j] = True
                 else:
-                    self.boolean_board[j][i] = False
+                    self.boolean_board[i][j] = False
 
 
-        self.original_board = self.board[:][:]
+        self.original_board = [[self.board[i][j] * self.boolean_board[i][j] for j in range(len(self.board[0]))] for i in range(len(self.board))]
         self.sketch_board = [[0 for _ in range(9)] for _ in range(9)]
 
 
@@ -115,24 +118,21 @@ class Board:
         # Clears the value cell. Note that the user can only remove the cell values and sketched value that are
         # filled by themselves.
         row, col = self.current_selected
-        if self.boolean_board[col][row] != True:
+        if self.boolean_board[row][col] != True:
             self.board[row][col] = 0
             self.sketch_board[row][col] = 0
 
     def sketch(self, value):
         # Sets the sketched value of the current selected cell equal to user entered value.
         # It will be displayed at the top left corner of the cell using the draw() function.
-        row = self.current_selected[0]
-        column = self.current_selected[1]
-
-        if self.boolean_board[column][row] != True:
+        row, col = self.current_selected
+        print(row, col)
+        print(self.boolean_board[row][col])
+        if self.boolean_board[row][col] != True:
             if value == 0:
                 self.clear()
-        # print(row, column)
-            self.board[row][column] = value
-            self.sketch_board[row][column] = value
-
-        # print(self.sketch_board)
+            self.place_number(value)
+            self.sketch_board[row][col] = value
         # should call draw function in sudoku.py after this function is called to redraw board
 
     def place_number(self, value):
@@ -144,9 +144,9 @@ class Board:
             return
         # sets actual value of selected cells
         row, col = self.current_selected
-        if self.boolean_board[col][row] != True:
+        if self.boolean_board[row][col] != True:
             self.board[row][col] = value
-            self.sketch_board[row][col] = 0
+
         # should call draw function in sudoku.py after this function is called to redraw board
 
     def reset_to_original(self):
