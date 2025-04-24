@@ -1,4 +1,3 @@
-from constant_variables import *
 from cell import *
 from sudoku_generator import *
 
@@ -12,30 +11,22 @@ class Board:
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
+
         if self.difficulty == "easy":
             self.removed_cells = 30
         if self.difficulty == "medium":
             self.removed_cells = 40
         if self.difficulty == "hard":
             self.removed_cells = 50
-        self.board = generate_sudoku(
-            BOARD_ROWS, self.removed_cells)
-        self.boolean_board = generate_sudoku(
-            BOARD_ROWS, self.removed_cells)
-        # this value should be like a constant, never change
+
+        self.board = generate_sudoku(BOARD_ROWS, self.removed_cells)
+        self.boolean_board = generate_sudoku(BOARD_ROWS, self.removed_cells)
+
         self.original = self.board[:][:]
-        self.sketch_board = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 0, 0, 0, 0, 0, 0, 0]
-                             ]
-        # self.cells = [[Cell("-", row, col, SQ_SIZE,) for col in
-        # range(self.width)] for row in range(self.height)]
+
+        self.sketch_board = self.board[:][:]
+
+
         self.cell_list = [[], [], [], [], [], [], [], [], []]
         self.sketch_cell_list = [[], [], [], [], [], [], [], [], []]
         self.current_selected = None
@@ -73,16 +64,14 @@ class Board:
         # print(f"board: {self.board}")  # FIXME
         for i in range(9):
             for j in range(9):
-                indiv_cell = Cell(
-                    value=self.board[i][j], row=i, col=j, screen=self.screen, sketch=False)
+                indiv_cell = Cell(value=self.board[i][j], row=i, col=j, screen=self.screen, sketch=False)
                 # self.cell_list[i].append(indiv_cell)
                 indiv_cell.draw(self.screen)
         # sketch cells
         # print(f"sketch_board: {self.sketch_board}")  # FIXME
         for i in range(9):
             for j in range(9):
-                indiv_cell = Cell(
-                    value=self.sketch_board[i][j], row=i, col=j, screen=self.screen, sketch=True)
+                indiv_cell = Cell(value=self.sketch_board[i][j], row=i, col=j, screen=self.screen, sketch=True)
                 # self.sketch_cell_list[i].append(indiv_cell)
                 indiv_cell.draw(self.screen)
 
@@ -145,8 +134,10 @@ class Board:
             if value == 0:
                 self.clear()
         # print(row, column)
+            self.board[row][column] = value
             self.sketch_board[row][column] = value
-        # print(self.sketch_board)  # FIXME
+
+        # print(self.sketch_board)
         # should call draw function in sudoku.py after this function is called to redraw board
 
     def place_number(self, value):
