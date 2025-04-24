@@ -115,7 +115,7 @@ class Board:
         # Clears the value cell. Note that the user can only remove the cell values and sketched value that are
         # filled by themselves.
         row, col = self.current_selected
-        if self.boolean_board[col][row] != 'T':
+        if self.boolean_board[col][row] != True:
             self.board[row][col] = 0
             self.sketch_board[row][col] = 0
 
@@ -125,7 +125,7 @@ class Board:
         row = self.current_selected[0]
         column = self.current_selected[1]
 
-        if self.boolean_board[column][row] != 'T':
+        if self.boolean_board[column][row] != True:
             if value == 0:
                 self.clear()
         # print(row, column)
@@ -144,7 +144,7 @@ class Board:
             return
         # sets actual value of selected cells
         row, col = self.current_selected
-        if self.boolean_board[col][row] != 'T':
+        if self.boolean_board[col][row] != True:
             self.board[row][col] = value
             self.sketch_board[row][col] = 0
         # should call draw function in sudoku.py after this function is called to redraw board
