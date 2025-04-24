@@ -20,11 +20,17 @@ class Board:
             self.removed_cells = 50
 
         self.board = generate_sudoku(BOARD_ROWS, self.removed_cells)
-        self.boolean_board = generate_sudoku(BOARD_ROWS, self.removed_cells)
+        self.boolean_board = [[0 for _ in range(9)] for _ in range(9)]
+        for i in range(9):
+            for j in range(9):
+                if self.board[i][j] != 0:
+                    self.boolean_board[j][i] = True
+                else:
+                    self.boolean_board[j][i] = False
 
-        self.original = self.board[:][:]
 
-        self.sketch_board = self.board[:][:]
+        self.original_board = self.board[:][:]
+        self.sketch_board = [[0 for _ in range(9)] for _ in range(9)]
 
 
         self.cell_list = [[], [], [], [], [], [], [], [], []]
@@ -61,18 +67,14 @@ class Board:
                                  (i * SQ_SIZE, HEIGHT), LINE_WIDTH)
         # draw cells
         # real cells
-        # print(f"board: {self.board}")  # FIXME
         for i in range(9):
             for j in range(9):
-                indiv_cell = Cell(value=self.board[i][j], row=i, col=j, screen=self.screen, sketch=False)
-                # self.cell_list[i].append(indiv_cell)
+                indiv_cell = Cell(value=self.original_board[i][j], row=i, col=j, screen=self.screen, sketch=False)
                 indiv_cell.draw(self.screen)
-        # sketch cells
-        # print(f"sketch_board: {self.sketch_board}")  # FIXME
+
         for i in range(9):
             for j in range(9):
                 indiv_cell = Cell(value=self.sketch_board[i][j], row=i, col=j, screen=self.screen, sketch=True)
-                # self.sketch_cell_list[i].append(indiv_cell)
                 indiv_cell.draw(self.screen)
 
     def select(self, row, column):
@@ -102,13 +104,6 @@ class Board:
         # listen for mouse click
         # make sure game isn't over because don't want user to be able to
         # input anything when the game is over
-        # if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
-        #     print(event.pos)  # position of mouse click
-        #     x, y = event.pos  # unpack x,y coords with tuple
-        #     row = y // SQ_SIZE
-        #     col = x // SQ_SIZE
-        #     print(row, col)  # gives square mouse clicked in
-
         row = y // SQ_SIZE
         col = x // SQ_SIZE
         if row > 8 or col > 8:
@@ -159,8 +154,10 @@ class Board:
         # resetting to original value
         for i in range(9):
             for j in range(9):
-                if self.boolean_board[j][i] == 'F':
+                if self.boolean_board[j][i] == False:
                     self.board[i][j] = 0
+                    self.sketch_board[i][j] = 0
+
 
     def is_full(self):
         # Returns a Boolean value indicating whether the board is full or not.
