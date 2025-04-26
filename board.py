@@ -4,7 +4,6 @@ from sudoku_generator import *
 
 class Board:
 
-    original_board = None
 
     def __init__(self, width, height, screen, difficulty):
         # Constructor for the Board class.
@@ -126,8 +125,8 @@ class Board:
         # Sets the sketched value of the current selected cell equal to user entered value.
         # It will be displayed at the top left corner of the cell using the draw() function.
         row, col = self.current_selected
-        print(row, col)
-        print(self.boolean_board[row][col])
+        # print(row, col)
+        # print(self.boolean_board[row][col])
         if self.boolean_board[row][col] != True:
             if value == 0:
                 self.clear()
@@ -154,7 +153,7 @@ class Board:
         # resetting to original value
         for i in range(9):
             for j in range(9):
-                if self.boolean_board[j][i] == False:
+                if self.boolean_board[i][j] == False:
                     self.board[i][j] = 0
                     self.sketch_board[i][j] = 0
 
